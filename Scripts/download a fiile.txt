@@ -1,0 +1,32 @@
+Download in PowerShell 2
+
+The next simple case is where you have to download a file from the web or from an FTP server. In PowerShell 2, you had to use the New-Object cmdlet for this purpose:
+$WebClient = New-Object System.Net.WebClient
+$WebClient.DownloadFile("https://www.contoso.com/file","C:\path\file")
+
+As of PowerShell 3, we have the Invoke-WebRequest cmdlet, which is more convenient to work with. It is PowerShell’s counterpart to GNU wget, a popular tool in the Linux world, which is probably the reason Microsoft decided to use its name as an alias for Invoke-WebRequest. This is perhaps an understatement; Invoke-WebRequest is more powerful than wget because it allows you to not only download files but also parse them. But this is a topic for another post.
+Download with Invoke-WebRequest
+
+To simply download a file through HTTP, you can use this command:
+Invoke-WebRequest -Uri "http://www.contoso.com" -OutFile "C:\path\file"
+
+In the example, we just download the HTML page that the web server at www.contoso.com generates. Note that, if you only specify the folder without the file name, as you can do with Copy-Item, PowerShell will error:
+
+Invoke-WebRequest : Could not find a part of the path
+
+The shorter version for the command line is:
+wget "http://www.contoso.com" -outfile "file"
+
+If you omit the local path to the folder, Invoke-WebRequest will just use your current folder. The -Outfile parameter is always required if you want to save the file. The reason is that, by default, Invoke-WebRequest sends the downloaded file to the pipeline.
+
+However, the pipeline will then not just contain the contents of the file. Instead, you will find an object with a variety of properties and methods that allow you to analyze text files. If you send a binary file through the pipeline, PowerShell will treat it as a text file and you won’t be able to use the data in the file.
+
+To only read the contents of the text file, we need to read the Content property of the object in the pipeline:
+Invoke-WebRequest "http://www.contoso.com" | Select-Object -ExpandProperty Content | Out-File "file"
+
+This command does the same thing as the previous one. The -ExpandProperty parameter ensures that the header (in this case, “Content”) won’t be stored in the file.
+
+If you want to have the file in the pipeline and store it locally, you have to use -PassThru parameter:
+Invoke-WebRequest "http://www.contoso.com" -OutFile "file" -PassThru | Select-Object -ExpandProperty Content
+
+This command stores the web page in a file and displays the HTML code.

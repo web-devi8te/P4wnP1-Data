@@ -1,0 +1,7 @@
+in the Powershell, cd to the .exe file location. For example:
+
+cd C:\Users\Administrators\Downloads
+
+PS C:\Users\Administrators\Downloads> & '.\aaa.exe'
+
+The installer pops up and follow the instruction on the screen.

