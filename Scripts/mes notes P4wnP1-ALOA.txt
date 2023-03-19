@@ -1,0 +1,88 @@
+Pour pouvoir connecter P4wnP1 au Wifi, faire des mises à jour, installer des logiciels:
+
+Se connecter au webclient dans le browser (ex firefox: 172.16.0.1:8000)
+
+WIFI SETTINGS:
+-Aller dans "Wifi Settings"
+-Selectioner "Client with Failover to AP"
+-Changer "US" par "FR" dans "regulatory domain"
+-Dans "WiFi client settings", écrire le nom de notre réseau Wifi dans "SSID", puis la clé de sécurité dans "Pré-shared key"
+ !!!Pour connecter P4wnP1-ALOA à la 4g/5g, c'est aussi dans la partie "WiFi client settings" que ça se passe...
+-Cliquer sur "Save", et donner un nom de template.
+-cliquer sur "Deploy", puis attendre la reconnection de P4wnP1.
+
+Se connecter en SSH (j'utilise le windows terminal):
+$ ssh root@172.16.0.1
+mdp: ****
+(c'est la connection ethernet over USB  ??)
+-Faire un update:
+$ apt update
+-faire un upgrade:
+$ apt upgrade -y
+
+
+Puis installer des logiciels utiles comme:
+-bettercap + l'UI:
+$ apt install bettercap
+
+
+
+
+USB SETTINGS:
+-Il faut changer l'ID vendeur et produit, car cela laisse des traces dans les logs, donc c'est mieux de changer avant plutôt que d'avoir à nettoyer après.
+Aussi cela peut empêcher certains problêmes sur windows qui se retrouvent à chaque connection à cause du cache.
+On peut utiliser ces pages web pour trouver des références à utiliser:
+https://devicehunt.com/search/type/usb/vendor/046D/device/any
+http://www.linux-usb.org/usb-ids.html
+ex 1:
+type: USB
+Vendor id: 046d
+Vendor name: Logitech, Inc.
+Device id: c71f
+Device name: diNovo Mini Wireless Keyboard
+ex 2:
+type: USB
+Vendor id: 046d
+Vendor name: Logitech, Inc.
+Device id: c703
+Device name: Elite Keyboard Y-RP20 + Mouse MX900 (Bluetooth)
+
+-Selon notre target, désactiver soit RNDIS si on vise windows, soit CDC ECM si on vise linux, macos ou unix.
+
+-Pour les attaques lors desquelles on à besoin d'un emplacement mémoire de carte SD, que ce soit pour y placer un fichier que l'on veut transférer et installer sur notre target, 
+ou à l'inverse pour en faire un emplacement ou recevoir des données que l'on récupère sur notre target, voici la solution:
+Se connecter en SSH (j'utilise le windows terminal):
+$ ssh root@172.16.0.1 (+ écrire "yes" et entrée lors de la première connection pour créer une clé)
+mdp: toor
+Ensuite:
+​$ cd /usr/local/P4wnP1/helper
+ex de création d'emplacement mémoire sur la sd:
+$ ./genimg -i -s 1024 -o 1024mb -l sandisk
+ou
+./genimg -i -s 50 -o passwords -l passwords
+
+Donc ./genimg -i = l'outil utilisé + commande
+     -s taille allouée en mb 
+     -l nom attribué à l'emplacement
+Puis:
+-se rendre dans USB Settings au niveau de la partie "Mass Storage"
+-cliquer à sa gauche pour l'allumer
+-cliquer à droite pour ouvrir le popup
+-cliquer sur la barre de choix "image file to use"
+-choisir le nom de l'emplacement que l'on à créé
+
+Voilà pour la partie USB Settings, ne pas oublier de toujours de sauvegarder le template, en cliquant sur "save", puis de le déployer.
+
+
+
+
+
+HID SETTINGS:
+Pour régler les problèmes HID scripts qui ne se lancent pas:
+-Mettre la carte SD ou est installée P4wnP1 dans un adaptateur, la plug sur un PC
+-Aller dans la partie "Boot".
+-Chercher le fichier "cmdline.txt"
+-Ajouter "modules-load=dwc2" après "rootwait", puis sauver le fichier.
+-Chercher le fichier "config.txt"
+-Ajouter "dtoverlay=dwc2" sous "[all]" (ne pas mettre de "#" devant !)
+

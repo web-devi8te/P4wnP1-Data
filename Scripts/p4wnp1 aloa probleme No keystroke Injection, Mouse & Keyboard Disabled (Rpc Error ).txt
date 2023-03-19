@@ -1,0 +1,17 @@
+Hello.
+
+As the title says. When using the P4wnP1 A.L.O.A 2022.03 image on a pi zero w from https://www.kali.org/get-kali/#kali-arm, it doesn't let me deploy any USB configuration, instead reverting to last configuration everytime with a message saying "couldn't find a working UDC driver".
+
+I plugged the MicroSD card into my PC and explored the boot partition. Inside it are two files, "cmdline.txt" and "config.txt". I added "modules-load=dwc2" after "rootwait" into the former, and added "dtoverlay=dwc2" under "[all]" into the latter.
+
+After that I booted the pi. Got into the admin page, tried changing values and settings. Deployed. It worked.
+
+
+
+Will this be fixed or is it intended behavior? If not intended, the fix that worked for me is written right there.
+
+
+
+- CYRO
+
+Edit: Fixed my mistake. It's "cmdline.txt", not "commandline.txt" 
